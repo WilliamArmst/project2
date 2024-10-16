@@ -14,6 +14,10 @@ unsigned int getSize(char* string) {
 
 //make directory
 void mkdir(char pathName[]){
+    if (pathName[0] == '/') {
+        printf("MKDIR ERROR: no path provided\n");
+        return;
+    }
 
     unsigned int size = getSize(pathName); // initialize variable for splitPath function
     char* name = (char*)malloc (size * sizeof(char));
@@ -21,6 +25,10 @@ void mkdir(char pathName[]){
     
     struct NODE* currNode = splitPath(pathName, name, dir); // get current node and delete dir info 
     free(dir);
+    if (!currNode) {
+        free(name);
+        return;
+    }
 
     struct NODE* newNode = (struct NODE*)malloc (sizeof(struct NODE));
     strcpy(newNode->name, name);
@@ -45,17 +53,14 @@ void mkdir(char pathName[]){
     } else {    
         currNode->childPtr = newNode;
     }
-
+    
+    printf("MKDIR SUCCESS: node %s successfully created\n", pathName);    
     free(name);
     return;
 }
 
 //handles tokenizing and absolute/relative pathing options
 struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
-
-    // NOTE THAT WITHOUT COMPLETING THIS FUNCTION CORRECTLY
-    // rm, rmdir, ls, cd, touch COMMANDS WILL NOT EXECUTE CORRECTLY
-    // SEE THE PROVIDED EXECUTABLE TO SEE THEIR EXPECTED BEHAVIOR
 
     // get pathName size
     unsigned int size = getSize(pathName);
@@ -100,35 +105,34 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
     baseName[j + 1] = '\0';
 
     struct NODE* currentDir = cwd; 
-
     char* path = (char*)malloc (size * sizeof(char));
-    
+
     j = 0;
     for (int i = 0; pathName[i] != '\0'; i++) {
         if (pathName[i] == '/') {
             path[j] = '\0';
-           
+            j = 0;
+             
             currentDir = currentDir->childPtr;
             if (!currentDir) {
-                free(path);
                 printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory
+                free(path);
                 return NULL;
             }
-
-            if (currentDir->name == path) {
+            if (strcmp(currentDir->name, path) == 0) {
                 continue;
             }
         
             while (currentDir->siblingPtr) {
                 currentDir = currentDir->siblingPtr;
-                if (currentDir->name == path) {
+                if (strcmp(currentDir->name, path) == 0) {
                     break;
                 }
             }
 
-            if (currentDir->name != path) {
+            if (strcmp(currentDir->name, path) != 0) {
+                printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory                
                 free(path);
-                printf("Error: directory %s does not exist\n", path); // ToDo: path should be full directory                
                 return NULL;
             }
 
@@ -140,9 +144,6 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
     }
 
     free(path);
-
-    // get node to return
-    
 
     return currentDir;
 }
