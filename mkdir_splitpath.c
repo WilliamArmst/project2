@@ -113,12 +113,13 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
             path[j] = '\0';
             j = 0;
              
-            currentDir = currentDir->childPtr;
-            if (!currentDir) {
+            if (!currentDir->childPtr) {                
                 printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory
                 free(path);
                 return NULL;
             }
+
+            currentDir = currentDir->childPtr;
             if (strcmp(currentDir->name, path) == 0) {
                 continue;
             }
