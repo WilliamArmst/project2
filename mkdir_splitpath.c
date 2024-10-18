@@ -34,6 +34,8 @@ void mkdir(char pathName[]){
     strcpy(newNode->name, name);
     newNode->fileType = 'D';
     newNode->parentPtr = currNode;    
+    newNode->childPtr = NULL;
+    newNode->siblingPtr = NULL;
 
     if (currNode->childPtr) {
         currNode = currNode->childPtr;
