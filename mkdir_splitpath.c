@@ -108,15 +108,18 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
 
     struct NODE* currentDir = cwd; 
     char* path = (char*)malloc (size * sizeof(char));
+    char* fullPath = (char*)malloc(size * sizeof(char));
 
     j = 0;
     for (int i = 0; pathName[i] != '\0'; i++) {
         if (pathName[i] == '/') {
             path[j] = '\0';
+            fullPath[i] = pathName[i];
             j = 0;
              
-            if (!currentDir->childPtr) {                
-                printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory
+            if (!currentDir->childPtr) { 
+                fullPath[i + 1] = '\0';
+                printf("ERROR: directory %s does not exist\n", fullPath); // ToDo: path should be full directory
                 free(path);
                 return NULL;
             }
@@ -142,6 +145,7 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
             j = 0;
         } else {
             path[j] = pathName[i];
+            fullPath[i] = pathName[i];
             j++;
         }
     }
