@@ -83,9 +83,6 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
     }
 
     int i;
-    // hopefully memory management is done in the other parts?
-    // dirName = (char*)malloc ((size - slashPos) * sizeof(char));
-    // baseName = (char*)malloc (slashPos * sizeof(char));
 
     dirName[0] = '\0';
     baseName[0] = '\0';
@@ -118,9 +115,10 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
             j = 0;
              
             if (!currentDir->childPtr) { 
-                fullPath[i + 1] = '\0';
+                fullPath[i] = '\0';
                 printf("ERROR: directory %s does not exist\n", fullPath); // ToDo: path should be full directory
                 free(path);
+                free(fullPath);
                 return NULL;
             }
 
@@ -139,6 +137,7 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
             if (strcmp(currentDir->name, path) != 0) {
                 printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory                
                 free(path);
+                free(fullPath);
                 return NULL;
             }
 
@@ -151,6 +150,7 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
     }
 
     free(path);
+    free(fullPath);
 
     return currentDir;
 }
