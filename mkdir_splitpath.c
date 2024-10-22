@@ -45,7 +45,6 @@ void mkdir(char pathName[]){
             free(name);
             free(newNode);
             printf("MKDIR ERROR: directory ");
-            pwd();
             printf("%s already exists\n", pathName);
             return;
         }
@@ -56,7 +55,6 @@ void mkdir(char pathName[]){
                 free(name);
                 free(newNode);
                 printf("MKDIR ERROR: directory ");
-                pwd();
                 printf("%s already exists\n", pathName);
                 return;
             }
