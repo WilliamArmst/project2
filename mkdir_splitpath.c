@@ -22,7 +22,6 @@ void mkdir(char pathName[]){
     unsigned int size = getSize(pathName); // initialize variable for splitPath function
     char* name = (char*)malloc (size * sizeof(char));
     char* dir = (char*)malloc (size * sizeof(char));   
-    
     struct NODE* currNode = splitPath(pathName, name, dir); // get current node and delete dir info 
     free(dir);
     if (!currNode) {
@@ -41,9 +40,13 @@ void mkdir(char pathName[]){
         currNode = currNode->childPtr;
 
         if (strcmp(currNode->name, name) == 0) {
+            // char* fullPath = (char*)malloc (size * sizeof(char));
+            
             free(name);
             free(newNode);
-            printf("MKDIR ERROR: directory %s already exists\n", pathName);
+            printf("MKDIR ERROR: directory ");
+            pwd();
+            printf("%s already exists\n", pathName);
             return;
         }
 
@@ -52,7 +55,9 @@ void mkdir(char pathName[]){
             if (strcmp(currNode->name, name) == 0) {
                 free(name);
                 free(newNode);
-                printf("MKDIR ERROR: director %s already exists\n", pathName);
+                printf("MKDIR ERROR: directory ");
+                pwd();
+                printf("%s already exists\n", pathName);
                 return;
             }
         }
@@ -122,7 +127,9 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
              
             if (!currentDir->childPtr) { 
                 fullPath[i] = '\0';
-                printf("ERROR: directory %s does not exist\n", fullPath); // ToDo: path should be full directory
+                printf("ERROR: directory ");
+                pwd();
+                printf("%s does not exist\n", fullPath);
                 free(path);
                 free(fullPath);
                 return NULL;
@@ -141,7 +148,10 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
             }
 
             if (strcmp(currentDir->name, path) != 0) {
-                printf("ERROR: directory %s does not exist\n", path); // ToDo: path should be full directory                
+                fullPath[i] = '\0';
+                printf("ERROR: directory ");
+                pwd();
+                printf("%s does not exist\n", fullPath);
                 free(path);
                 free(fullPath);
                 return NULL;
