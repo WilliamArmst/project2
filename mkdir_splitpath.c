@@ -127,9 +127,7 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
              
             if (!currentDir->childPtr) { 
                 fullPath[i] = '\0';
-                printf("ERROR: directory ");
-                pwd();
-                printf("%s does not exist\n", fullPath);
+                printf("ERROR: directory %s does not exist\n", fullPath);
                 free(path);
                 free(fullPath);
                 return NULL;
@@ -149,9 +147,7 @@ struct NODE* splitPath(char* pathName, char* baseName, char* dirName){
 
             if (strcmp(currentDir->name, path) != 0) {
                 fullPath[i] = '\0';
-                printf("ERROR: directory ");
-                pwd();
-                printf("%s does not exist\n", fullPath);
+                printf("ERROR: directory %s does not exist\n", fullPath);
                 free(path);
                 free(fullPath);
                 return NULL;
