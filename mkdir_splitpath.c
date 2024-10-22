@@ -43,12 +43,18 @@ void mkdir(char pathName[]){
         if (strcmp(currNode->name, name) == 0) {
             free(name);
             free(newNode);
-            printf("MKDIR ERROR: directory %s already exists\n",pathName);
+            printf("MKDIR ERROR: directory %s already exists\n", pathName);
             return;
         }
 
         while (currNode->siblingPtr) {
             currNode = currNode->siblingPtr;
+            if (strcmp(currNode->name, name) == 0) {
+                free(name);
+                free(newNode);
+                printf("MKDIR ERROR: director %s already exists\n", pathName);
+                return;
+            }
         }
 
         currNode->siblingPtr = newNode;
